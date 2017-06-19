@@ -1,14 +1,45 @@
-function componentFactory(mixins) {
-  const baseComponent = class extends Component { };
-  return mixins.reduceRight((base,mixin) => {
-    const mixedIn = mixin(base);
+// helper to avoid too much super()
+const composedMethods = [
+  { name: 'onReady', identifier: 'onReadyCallback' }
+];
 
-    if (base.defaultAttrs && mixedIn.defaultAttrs) {
-      mixedIn.defaultAttrs = Object.assign({}, base.defaultAttrs, mixedIn.defaultAttrs);
+function composeMethod(name, identifier, base, mixedIn) {
+  const baseProto = base.prototype;
+  const mixedInProto = mixedIn.prototype;
+
+  if (baseProto.hasOwnProperty(name) && mixedInProto.hasOwnProperty(name)) {
+    const baseMethod = baseProto[name];
+    const mixedInMethod = mixedInProto[name];
+
+    const composed = function() {
+      mixedInMethod.apply(this, arguments);
+      baseMethod.apply(this, arguments);
     }
 
-    return mixedIn
-  }, baseComponent);
+    Object.defineProperty(mixedInProto, identifier, {
+      value: composed
+    });
+  }
+}
+
+function mixin(base, mixin) {
+  const mixedIn = mixin(base);
+
+  if (base.defaultAttrs && mixedIn.defaultAttrs) {
+    mixedIn.defaultAttrs = Object.assign({}, base.defaultAttrs, mixedIn.defaultAttrs);
+  }
+
+  for (let i=0; i<composedMethods.length; i++) {
+    const { name, identifier } = composedMethods[i];
+    composeMethod(name, identifier, base, mixedIn);
+  }
+
+  return mixedIn;
+}
+
+function componentFactory(mixins) {
+  const baseComponent = class extends Component { };
+  return mixins.reduceRight(mixin, baseComponent);
 }
 
 function Component(attr) {
@@ -24,6 +55,13 @@ function Component(attr) {
 
 Component.prototype.on = function() {
   return 'on';
-}
+};
+
+Component.prototype.initialize = function() {
+  this.onReady();
+  if (this.onReadyCallback) {
+    this.onReadyCallback();
+  }
+};
 
 module.exports = Component;

@@ -91,3 +91,40 @@ const defaultAttrs = () => {
   });
 }
 defaultAttrs();
+
+// test 6: onReady
+const onReadyTest = () => {
+  const readiness = [];
+
+  const m1 = (superclass) => class extends superclass {
+    constructor(attr) {
+      super(attr);
+    }
+
+    onReady() {
+      readiness.push('m1');
+    }
+  };
+
+  const m2 = (superclass) => class extends superclass {
+    constructor(attr) {
+      super(attr);
+    }
+
+    onReady() {
+      readiness.push('m2');
+    }
+  };
+
+  class TestComponent extends Component(m1, m2) {
+    onReady() {
+      readiness.push('component');
+    }
+  }
+
+  const tc = new TestComponent;
+  tc.initialize();
+
+  assert.deepEqual(readiness, ['component', 'm1', 'm2']);
+};
+onReadyTest();
