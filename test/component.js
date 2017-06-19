@@ -10,8 +10,8 @@ const ClassicalMixin = (superclass) => class extends superclass {
 
 let instanceId = 0;
 const ClassicalWithInstanceMixin = (superclass) => class extends superclass {
-  constructor() {
-    super();
+  constructor(attr) {
+    super(attr);
     this.instance = instanceId++;
   }
 
@@ -26,7 +26,7 @@ const basicInheritance = () => {
   class TestComponent extends Component { }
   const tc = new TestComponent;
 
-  assert.equal(tc.on(), 'on', 'TestComponent inherits methods from Component');
+  assert.equal(tc.on(), 'on');
 };
 
 basicInheritance();
@@ -36,15 +36,15 @@ const functionalInheritance = () => {
   class TestComponent extends Component(ClassicalMixin) { }
   const tc = new TestComponent;
 
-  assert.equal(tc.on(), 'on', 'TestComponent inherits methods from Component');
-  assert.equal(tc.classical(), 'classical mixin', 'TestComponent inherits methods from ClassicalMixin');
+  assert.equal(tc.on(), 'on');
+  assert.equal(tc.classical(), 'classical mixin');
 };
 functionalInheritance();
 
 // test 3: instance properties
 const instanceProperties = () => {
   instanceId = 1;
-  class TestComponent extends Component(ClassicalWithInstanceMixin) { }
+  class TestComponent extends Component(ClassicalWithInstanceMixin) { };
 
   const tc1 = new TestComponent;
   const tc2 = new TestComponent;
@@ -53,3 +53,12 @@ const instanceProperties = () => {
   assert.equal(tc2.instance, 2);
 };
 instanceProperties();
+
+// test 4: multiple mixins, applied right to left
+const multipleMixins = () => {
+  class TestComponent extends Component(ClassicalMixin, ClassicalWithInstanceMixin) { };
+  const tc = new TestComponent;
+
+  assert.equal(tc.classical(), 'sub and super classical mixin');
+};
+multipleMixins();
