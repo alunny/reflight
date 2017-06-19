@@ -56,7 +56,7 @@ instanceProperties();
 
 // test 4: multiple mixins, applied right to left
 const multipleMixins = () => {
-  class TestComponent extends Component(ClassicalMixin, ClassicalWithInstanceMixin) { };
+  class TestComponent extends Component(ClassicalWithInstanceMixin, ClassicalMixin) { };
   const tc = new TestComponent;
 
   assert.equal(tc.classical(), 'sub and super classical mixin');
