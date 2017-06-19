@@ -1,0 +1,11 @@
+{
+  "name": "reflight",
+  "version": "0.0.1",
+  "description": "re-thinking flight",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Andrew Lunny <alunny@gmail.com>",
+  "license": "MIT"
+}
