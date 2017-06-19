@@ -89,6 +89,13 @@ const defaultAttrs = () => {
     top: 90,
     left: 100
   });
+
+  const tc = new TestComponent;
+  assert.deepEqual(tc.attr, {
+    selector: '.foo',
+    top: 90,
+    left: 100
+  });
 }
 defaultAttrs();
 
@@ -128,3 +135,16 @@ const onReadyTest = () => {
   assert.deepEqual(readiness, ['component', 'm1', 'm2']);
 };
 onReadyTest();
+
+// test 7: setting attributes
+const settingAttributes = () => {
+  class TestComponent extends Component { };
+  TestComponent.defaultAttrs = {
+    cat: 'garfield',
+    duck: 'daffy'
+  };
+
+  const tc = new TestComponent({ duck: 'donald' });
+  assert.deepEqual(tc.attr, { cat: 'garfield', duck: 'donald' });
+};
+settingAttributes();

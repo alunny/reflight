@@ -48,9 +48,11 @@ function Component(attr) {
     args[i] = arguments[i];
   }
 
-  if (typeof attr !== 'undefined' && args.length > 0) {
+  if (typeof attr === 'function' && args.length > 0) {
     return componentFactory.call(null, args);
   }
+
+  this.createAttributes(attr);
 }
 
 Component.prototype.on = function() {
@@ -62,6 +64,11 @@ Component.prototype.initialize = function() {
   if (this.onReadyCallback) {
     this.onReadyCallback();
   }
+};
+
+Component.prototype.createAttributes = function(attr = {}) {
+  const inheritedDefaults = this.constructor.defaultAttrs || {};
+  this.attr = Object.assign({}, inheritedDefaults, attr);
 };
 
 module.exports = Component;
