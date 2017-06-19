@@ -62,3 +62,32 @@ const multipleMixins = () => {
   assert.equal(tc.classical(), 'sub and super classical mixin');
 };
 multipleMixins();
+
+// test 5: default attrs
+const defaultAttrs = () => {
+  const m1 = (superclass) => {
+    class MixinOne extends superclass { }
+    MixinOne.defaultAttrs = {
+      selector: '.foo',
+      top: 90
+    };
+    return MixinOne;
+  }
+
+  const m2 = (superclass) => {
+    class MixinTwo extends superclass { };
+    MixinTwo.defaultAttrs = {
+      left: 100
+    };
+    return MixinTwo
+  };
+
+  class TestComponent extends Component(m1, m2) { };
+
+  assert.deepEqual(TestComponent.defaultAttrs, {
+    selector: '.foo',
+    top: 90,
+    left: 100
+  });
+}
+defaultAttrs();

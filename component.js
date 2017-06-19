@@ -1,6 +1,14 @@
 function componentFactory(mixins) {
   const baseComponent = class extends Component { };
-  return mixins.reduceRight((base,mixin) => mixin(base), baseComponent);
+  return mixins.reduceRight((base,mixin) => {
+    const mixedIn = mixin(base);
+
+    if (base.defaultAttrs && mixedIn.defaultAttrs) {
+      mixedIn.defaultAttrs = Object.assign({}, base.defaultAttrs, mixedIn.defaultAttrs);
+    }
+
+    return mixedIn
+  }, baseComponent);
 }
 
 function Component(attr) {
