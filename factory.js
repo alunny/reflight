@@ -37,47 +37,7 @@ function mixin(base, mixin) {
   return mixedIn;
 }
 
-function componentFactory(mixins) {
-  const baseComponent = class extends Component { };
+module.exports = function componentFactory(Base, mixins) {
+  const baseComponent = class extends Base { };
   return mixins.reduceRight(mixin, baseComponent);
 }
-
-function Component(attr) {
-  const args = new Array(arguments.length);
-  for (let i=0; i<args.length; i++) {
-    args[i] = arguments[i];
-  }
-
-  if (typeof attr === 'function' && args.length > 0) {
-    return componentFactory.call(null, args);
-  }
-
-  this.createAttributes(attr);
-}
-
-Component.prototype.on = function() {
-  return 'on';
-};
-
-Component.prototype.off = function() {
-};
-
-Component.prototype.initialize = function() {
-  this.onReady();
-  if (this.onReadyCallback) {
-    this.onReadyCallback();
-  }
-};
-
-Component.prototype.createAttributes = function(attr = {}) {
-  const inheritedDefaults = this.constructor.attributes || {};
-  this.attr = Object.assign({}, inheritedDefaults, attr);
-};
-
-Component.prototype.select = function(selector) {
-};
-
-Component.prototype.teardown = function() {
-};
-
-module.exports = Component;

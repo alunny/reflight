@@ -1,5 +1,5 @@
 const assert = require('assert');
-const Component = require('../component');
+const Component = require('./testComponent');
 
 // mixin pattern borrowed from http://justinfagnani.com/2015/12/21/real-mixins-with-javascript-classes/
 const ClassicalMixin = (superclass) => class extends superclass {
@@ -144,7 +144,7 @@ const settingAttributes = () => {
     duck: 'daffy'
   };
 
-  const tc = new TestComponent({ duck: 'donald' });
+  const tc = new TestComponent(null, { duck: 'donald' });
   assert.deepEqual(tc.attr, { cat: 'garfield', duck: 'donald' });
 };
 settingAttributes();
