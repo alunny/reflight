@@ -25,8 +25,8 @@ function composeMethod(name, identifier, base, mixedIn) {
 function mixin(base, mixin) {
   const mixedIn = mixin(base);
 
-  if (base.defaultAttrs && mixedIn.defaultAttrs) {
-    mixedIn.defaultAttrs = Object.assign({}, base.defaultAttrs, mixedIn.defaultAttrs);
+  if (base.attributes && mixedIn.attributes) {
+    mixedIn.attributes = Object.assign({}, base.attributes, mixedIn.attributes);
   }
 
   for (let i=0; i<composedMethods.length; i++) {
@@ -59,6 +59,9 @@ Component.prototype.on = function() {
   return 'on';
 };
 
+Component.prototype.off = function() {
+};
+
 Component.prototype.initialize = function() {
   this.onReady();
   if (this.onReadyCallback) {
@@ -67,8 +70,14 @@ Component.prototype.initialize = function() {
 };
 
 Component.prototype.createAttributes = function(attr = {}) {
-  const inheritedDefaults = this.constructor.defaultAttrs || {};
+  const inheritedDefaults = this.constructor.attributes || {};
   this.attr = Object.assign({}, inheritedDefaults, attr);
+};
+
+Component.prototype.select = function(selector) {
+};
+
+Component.prototype.teardown = function() {
 };
 
 module.exports = Component;

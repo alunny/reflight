@@ -64,10 +64,10 @@ const multipleMixins = () => {
 multipleMixins();
 
 // test 5: default attrs
-const defaultAttrs = () => {
+const attributes = () => {
   const m1 = (superclass) => {
     class MixinOne extends superclass { }
-    MixinOne.defaultAttrs = {
+    MixinOne.attributes = {
       selector: '.foo',
       top: 90
     };
@@ -76,7 +76,7 @@ const defaultAttrs = () => {
 
   const m2 = (superclass) => {
     class MixinTwo extends superclass { };
-    MixinTwo.defaultAttrs = {
+    MixinTwo.attributes = {
       left: 100
     };
     return MixinTwo
@@ -84,7 +84,7 @@ const defaultAttrs = () => {
 
   class TestComponent extends Component(m1, m2) { };
 
-  assert.deepEqual(TestComponent.defaultAttrs, {
+  assert.deepEqual(TestComponent.attributes, {
     selector: '.foo',
     top: 90,
     left: 100
@@ -97,7 +97,7 @@ const defaultAttrs = () => {
     left: 100
   });
 }
-defaultAttrs();
+attributes();
 
 // test 6: onReady
 const onReadyTest = () => {
@@ -139,7 +139,7 @@ onReadyTest();
 // test 7: setting attributes
 const settingAttributes = () => {
   class TestComponent extends Component { };
-  TestComponent.defaultAttrs = {
+  TestComponent.attributes = {
     cat: 'garfield',
     duck: 'daffy'
   };
