@@ -1,6 +1,5 @@
 function componentFactory(mixins) {
   const baseComponent = class extends Component { };
-
   return mixins.reduceRight((base,mixin) => mixin(base), baseComponent);
 }
 

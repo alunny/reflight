@@ -1,5 +1,5 @@
 const assert = require('assert');
-const Component = require('../lib/component');
+const Component = require('../component');
 
 // mixin pattern borrowed from http://justinfagnani.com/2015/12/21/real-mixins-with-javascript-classes/
 const ClassicalMixin = (superclass) => class extends superclass {
